@@ -14,149 +14,74 @@ https://github.com/user-attachments/assets/66d68aad-210a-452d-b405-b58c13f42f53
 
 ## 🚀 Quick Start
 
-### Prerequisites
+### 1. Install
+
+```bash
+claude plugin marketplace add m98/fluent && claude plugin install fluent@m98
+```
+
+One line. Registers the marketplace, installs the plugin. Works globally from any directory after this.
+
+### 2. Start learning
+
+Restart Claude Code, then:
+
+```
+/setup     # onboard: name, target language, level, goals
+/learn     # begin your first session
+```
+
+That's it.
+
+---
+
+### Requirements
 
 - [Claude Code](https://code.claude.com) installed
-- A Claude Code subscription
-- **Python 3.8+** in your `PATH` — used by the automation hooks and DB scripts. Check: `python3 --version`.
-  - macOS: pre-installed, or `brew install python3`.
-  - Linux: `sudo apt install python3` (Debian/Ubuntu) or distro equivalent.
-  - Windows: install via [python.org](https://www.python.org/downloads/) or use WSL.
-- **Bash** — needed by the PreCompact safety-backup hook. Built-in on macOS/Linux. On Windows, use WSL or Git Bash.
-- Basic understanding of command line.
-- A desire to learn a new language! 🌟
+- **Python 3.8+** (most systems already have it — check with `python3 --version`). Install via [python.org](https://www.python.org/downloads/), `brew install python3`, or your distro's package manager. No pip packages needed — Fluent uses only the standard library.
+- **Bash** for the PreCompact backup hook (built-in on macOS/Linux; on Windows use WSL or Git Bash).
 
-> **No third-party Python packages required.** Fluent uses only the Python standard library — nothing to `pip install`.
-
-### Installation
-
-Two supported install paths. Both end at the same `/setup` prompt and share the same skills, hooks, and databases.
-
-| Path | Best for | Data location |
-|------|----------|---------------|
-| **Claude Code plugin** (recommended) | Everyday use — runs from any directory | `~/.claude/fluent-data/` |
-| **Git clone** | Customizing skills, contributing, or per-project learning state | `./data/` inside the repo |
-
----
-
-#### 📦 Install as a Claude Code plugin (recommended)
-
-Runs anywhere you launch Claude Code. Learner data is global under `~/.claude/fluent-data/` by default, so you can practice from any project or directory.
-
-Two interchangeable paths — use whichever fits your workflow.
-
-**Path 1 — Terminal (`claude` CLI):**
+### Verify, update, uninstall
 
 ```bash
-# 1. Add the Fluent marketplace (one-time; uses an interactive session)
-claude
-# Inside Claude Code:
-/plugin marketplace add m98/fluent
-# Then exit Claude Code (Ctrl+D or /exit)
+claude plugin list                    # expect: fluent@m98  enabled
+claude plugin update fluent@m98       # pull latest version
+claude plugin uninstall fluent@m98    # remove entirely
+```
 
-# 2. Install the plugin from the shell — persists to your user config
-claude plugin install fluent@fluent-marketplace
+### Alternative: git clone
 
-# 3. Verify the install (should list "fluent" as enabled)
-claude plugin list
-claude plugin validate fluent@fluent-marketplace
+Prefer to hack on the skills or keep per-project state?
 
-# 4. Launch Claude Code and start learning
-claude
+```bash
+git clone https://github.com/m98/fluent.git
+cd fluent
+claude          # launch from repo root
 /setup
-/learn
 ```
 
-**Path 2 — Inside Claude Code (slash commands only):**
+Learner data lives in `./data/` inside the cloned repo instead of `~/.claude/fluent-data/`.
 
-```
-claude
-```
+### Where your data lives
 
-Then in the session:
+Fluent resolves the data directory in this order — first match wins:
 
-```
-/plugin marketplace add m98/fluent
-/plugin install fluent@fluent-marketplace
-/plugin list                       # verify
-```
+1. `$FLUENT_DATA_DIR` if set (override everything).
+2. `$CLAUDE_PROJECT_DIR/data/` if it has `learner-profile.json` (clone mode, running from outside the repo root).
+3. `./data/` if it has `learner-profile.json` (clone mode, running inside the repo).
+4. `~/.claude/fluent-data/` (plugin-install default).
 
-Restart Claude Code, then run `/setup` to onboard and `/learn` to begin.
-
-**Maintenance:**
-
-- Update: `claude plugin update fluent@fluent-marketplace` (or `/plugin update fluent@fluent-marketplace` inside a session).
-- Disable without uninstalling: `claude plugin disable fluent@fluent-marketplace`.
-- Uninstall: `claude plugin uninstall fluent@fluent-marketplace`.
-
-**Verify it's working:**
-
-After installing and restarting, open Claude Code and confirm:
-
-```
-/                    # should show /setup, /learn, /vocab, /writing, /speaking,
-                     # /reading, /review, /progress, plus helper skills
-```
-
-Or from the shell:
+Set `FLUENT_DATA_DIR` to run multiple learners on one machine:
 
 ```bash
-claude plugin list | grep fluent    # expect: fluent@fluent-marketplace  enabled
+export FLUENT_DATA_DIR=~/.fluent/dutch
 ```
 
----
-
-#### 📁 Install by cloning the repository
-
-Best if you want to customize skills, contribute upstream, or keep per-project learning state. Learner data lives in `./data/` inside the cloned repo — cd into the repo to work with a given learner.
-
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/m98/fluent.git
-   cd fluent
-   ```
-
-2. **Start Claude Code from the repo root:**
-   ```bash
-   claude
-   ```
-
-3. **Run the onboarding:**
-   ```
-   /setup
-   ```
-
-4. **Start learning:**
-   ```
-   /learn
-   ```
-
-To update later: `git pull` inside the repo.
-
----
-
-#### 📂 Where your data lives
-
-Fluent stores your profile, progress, mistakes, and spaced-repetition state as JSON. Resolution precedence on every run (first match wins):
-
-1. `$FLUENT_DATA_DIR` if the environment variable is set.
-2. `$CLAUDE_PROJECT_DIR/data/` if that path contains `learner-profile.json` (clone mode, running from outside the repo root).
-3. `./data/` if `./data/learner-profile.json` exists in the current working directory (clone mode, running inside the repo).
-4. `~/.claude/fluent-data/` otherwise (plugin-install default).
-
-Set `FLUENT_DATA_DIR` in your shell (e.g. `export FLUENT_DATA_DIR=~/.fluent/dutch`) to run multiple learners, one per target language, on the same machine.
-
-**Verify your resolved data dir** at any time:
+Check where Fluent is currently looking:
 
 ```bash
-python3 -c "
-import sys; sys.path.insert(0, '.claude/hooks')
-from fluent_paths import data_dir
-print('Fluent data directory:', data_dir())
-"
+python3 -c "import sys; sys.path.insert(0, '.claude/hooks'); from fluent_paths import data_dir; print(data_dir())"
 ```
-
-**That's it!** Your AI tutor is ready and knows everything about your goals.
 
 ---
 
@@ -554,11 +479,11 @@ The PostToolUse hook exits with status 2 if it finds malformed JSON. The last 10
 Restart Claude Code. If still missing, verify install:
 
 ```bash
-claude plugin list                              # should show fluent@fluent-marketplace enabled
-claude plugin validate fluent@fluent-marketplace
+claude plugin list                              # should show fluent@m98 enabled
+claude plugin validate fluent@m98
 ```
 
-Or from inside a session: `/plugin list`. If the plugin is disabled, enable it: `claude plugin enable fluent@fluent-marketplace`.
+Or from inside a session: `/plugin list`. If the plugin is disabled, enable it: `claude plugin enable fluent@m98`.
 
 ---
 
