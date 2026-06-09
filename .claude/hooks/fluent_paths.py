@@ -18,8 +18,24 @@ Call ensure_data_dir() before writing.
 from __future__ import annotations
 
 import os
+import sys
 from functools import lru_cache
 from pathlib import Path
+
+
+def force_utf8_io() -> None:
+    """Make stdout/stderr UTF-8 so emoji/CJK output doesn't crash on Windows.
+
+    Windows consoles default to a legacy code page (cp1252/gbk); printing the
+    emoji in the hook summaries raises UnicodeEncodeError there. No-op on
+    platforms whose streams are already UTF-8 or predate ``reconfigure``.
+    Call once at the top of any hook that prints.
+    """
+    for stream in (sys.stdout, sys.stderr):
+        try:
+            stream.reconfigure(encoding="utf-8")
+        except (AttributeError, ValueError):
+            pass
 
 
 @lru_cache(maxsize=1)

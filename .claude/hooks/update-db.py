@@ -22,8 +22,9 @@ from datetime import datetime, timedelta
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from fluent_paths import ensure_data_dir, ensure_backups_dir  # noqa: E402
+from fluent_paths import ensure_data_dir, ensure_backups_dir, force_utf8_io  # noqa: E402
 
+force_utf8_io()
 DATA_DIR = ensure_data_dir()
 BACKUP_DIR = ensure_backups_dir()
 
@@ -41,7 +42,7 @@ def save_json(path: Path, data: dict):
         f.write('\n')
         f.flush()
         os.fsync(f.fileno())
-    os.rename(str(tmp_path), str(path))
+    os.replace(str(tmp_path), str(path))  # atomic + overwrites (os.rename fails on Windows if dest exists)
 
 
 def parse_date(s: str) -> datetime:
