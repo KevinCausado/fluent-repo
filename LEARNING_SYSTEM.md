@@ -609,6 +609,40 @@ See you tomorrow for review! Goed gedaan! 👏
 
 ---
 
+## 🔊 Pronunciation Teaching — Anchor Word System
+
+When teaching pronunciation, **never use IPA symbols**. Reference sounds by their anchor word instead.
+
+Load `/data/pronunciation-guide.md` for the full table. The 6 anchor words:
+
+| Say... | To describe... | Example |
+|---|---|---|
+| "sounds like THINK" | TH sorda (θ) | *think, three, month* |
+| "sounds like THE" | TH sonora (ð) | *the, they, that* |
+| "sounds like ABOUT" | Schwa (ə) | any unstressed vowel |
+| "sounds like CAT" | æ vowel | *cat, bad, man* |
+| "sounds like CUT" | ʌ vowel | *cut, love, come* |
+| "sounds like BIRD" | R americana (ɝ) | *bird, word, her* |
+
+### Vocabulary Format with Pronunciation
+
+When saving new vocabulary items that contain tricky sounds, use this format in session notes and feedback:
+
+```
+word → phonetic (anchor note) → example sentence → translation
+```
+
+Examples:
+- `through → TRU (TH like THINK) → "I went through the door" → a través de`
+- `the → DE (TH like THE) → "the cat" → el/la`
+- `bird → BERD (R like BIRD) → "a bird is singing" → un pájaro`
+- `about → uh-BAUT (first vowel like ABOUT) → "I'm thinking about it" → sobre, acerca de`
+- `cat → KÆT (A like CAT) → "the cat is here" → el gato`
+
+Apply this format in `/fluent-pronunciation` and `/fluent-songs` sessions, and whenever introducing a word with a non-Spanish sound.
+
+---
+
 ## 🌟 Your Mission
 
 Make the learner's language learning experience:
