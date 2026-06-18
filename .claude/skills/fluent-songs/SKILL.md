@@ -48,16 +48,22 @@ Example:
 
 ### 3. Transcription conventions
 
-Use the same system as `/fluent-pronunciation`:
+Use the same system as `/fluent-pronunciation`. For non-Spanish sounds, reference the anchor word from `/data/pronunciation-guide.md`:
 
-| Sound | Convention | Example |
-|---|---|---|
-| Aspirated h | j suave | have = *jav* |
-| sh | sh | she = *shi* |
-| th sonora | d suave | the = *de* |
-| th sorda | z | think = *zink* |
-| Long vowel | double letter | see = *sii* |
-| Short vowel | single letter | sit = *sit* |
+- TH sorda → *z* in transcription + note "(TH like THINK)"
+- TH sonora → *d* suave in transcription + note "(TH like THE)"
+- Schwa → *uh* in transcription + note "(like ABOUT)" when first introduced
+- æ vowel → *æ* or *a abierta* + note "(A like CAT)"
+- R americana → *er* in transcription + note "(R like BIRD)"
+
+| Sound | Convention | Anchor note | Example |
+|---|---|---|---|
+| Aspirated h | j suave | — | have = *jav* |
+| sh | sh | — | she = *shi* |
+| th sonora | d suave | TH like THE | the = *de* |
+| th sorda | z | TH like THINK | think = *zink* |
+| Long vowel | double letter | — | see = *sii* |
+| Short vowel | single letter | — | sit = *sit* |
 | Schwa | uh | a = *uh* |
 | Flap T | d suave | better = *BE-der* |
 | Silent letter | omit | knife = *naif* |
